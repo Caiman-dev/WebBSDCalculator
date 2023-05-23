@@ -4,7 +4,7 @@
 <head>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
-    <link type="text/css" rel="stylesheet" href="css/energy-calc.css" media="screen,projection" />
+    <link type="text/css" rel="stylesheet" href="css/bsd-calc.css" media="screen,projection" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
@@ -14,40 +14,16 @@
         <div class="main-container">
             <div class="energy">
                 <div class="nrg">
-                    <img class="energy-img" src="images/energy.ico" alt="energy" width="10px">
-                    <label>v1.4 от 01.02.2023</label>
+                    <img class="energy-img" src="images/bsd.png" alt="logo">
+                    <label>v1.0 от 01.05.2023</label>
                 </div>
                 <label></label>
             </div>
             <a href="https://www.donbass-post.ru/" class="margin"><img src="images/logo.png" /></a>
             <div class="rows">
                 <div class="input-field">
-                    <select id="type">
-                        <option value="" disabled selected>Выберите вид:</option>
-                        <option value="Груз">Груз</option>
-                        <option value="Конверт">Конверт</option>
-                    </select>
-                    <label>Вид груза:</label>
-                </div>
-            </div>
-            <div class="rows">
-                <div class="input-field">
-                    <select id="city">
-                        <option value="" disabled selected>Выберите город:</option>
-                        <option value="Донецк">Донецк</option>
-                        <option value="Макеевка">Макеевка</option>
-                        <option value="Горловка">Горловка</option>
-                        <option value="Енакиево">Енакиево</option>
-                        <option value="Шахтерск">Шахтерск</option>
-                        <option value="Снежное">Снежное</option>
-                        <option value="Алчевск">Алчевск</option>
-                        <option value="Луганск">Луганск</option>
-                        <option value="Стаханов">Стаханов</option>
-                        <option value="Мариуполь">Мариуполь</option>
-                        <option value="Бердянск">Бердянск</option>
-                        <option value="Мелитополь">Мелитополь</option>
-                    </select>
-                    <label>Город:</label>
+                    <input type="text" id="city" class="autocomplete">
+                    <label for="city">Город:</label>
                 </div>
             </div>
             <div class="rows">
@@ -80,7 +56,7 @@
 
     <script src="js/jquery-3.4.0.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
-    <script type="text/javascript" src="js/energy-calc.js"></script>
+    <script type="text/javascript" src="js/bsd-calc.js"></script>
 </body>
 
 </html>
