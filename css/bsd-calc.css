@@ -78,12 +78,12 @@ form {
     align-items: flex-start !important;
     justify-content: space-between !important;
     margin-top: 20px;
-    gap: 155px;
+    gap: 130px;
 }
 
 .energy-img {
-    height: 16px;
-    width: 16px;
+    height: 48px;
+    width: 48px;
 }
 
 .nrg {
