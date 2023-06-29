@@ -3,28 +3,76 @@ $(document).ready(function () {
     $('select').formSelect();
 });
 
-const city = document.getElementById("city");
+const senderBlock = document.getElementById("sender-block");
+const recieverBlock = document.getElementById("reciever-block");
+const senderCity = document.getElementById("sender-city");
+const recieverCity = document.getElementById("reciever-city");
 const weight = document.getElementById("weight");
 const volume = document.getElementById("volume");
 const resultField = document.getElementById("result-field");
+const volResultField = document.getElementById("result-vol");
 
-
-let cityValue = '';
-let row, weightValue, volumeValue,
-    weightResult, volumeResult, finalResult;
-
+let senderCityValue = '', recieverCityValue = '', direction = 'RST'
+let row, weightValue, volumeValue, weightResult, volumeResult, finalResult;
 let isValidWeight = false, isValidVolume = false;
 
 let tarif = [
-    [600, 34, 20, 20, 19, 18, 18, 600, 8500, 5000, 5000, 4750, 4500, 4500],
-    [600, 30, 18, 17, 17, 16, 16, 600, 7500, 4500, 4250, 4250, 4000, 4000],
-    [600, 34, 20, 20, 19, 18, 18, 600, 8500, 5000, 5000, 4750, 4500, 4500],
-    [600, 34, 20, 20, 19, 17, 16, 600, 8500, 5000, 5000, 4750, 4250, 4000],
-    [600, 30, 18, 17, 17, 16, 16, 600, 7500, 4500, 4250, 4250, 4000, 4000],
-    [600, 34, 20, 20, 19, 18, 18, 600, 8500, 5000, 5000, 4750, 4500, 4500],
-    [600, 36, 20, 20, 19, 17, 16, 600, 9000, 5000, 5000, 4750, 4250, 4000],
-    [700, 44, 28, 28, 26, 23, 22, 700, 11000, 7000, 7000, 6500, 5750, 5500]
+    [600, 38, 22, 20, 19, 18, 18, 600, 9500, 5500, 5000, 4750, 4500, 4500],
+    [600, 34, 20, 18, 17, 16, 16, 600, 8500, 5000, 4500, 4250, 4000, 4000],
+    [600, 40, 22, 20, 19, 17, 16, 600, 10000, 5500, 5000, 4750, 4250, 4000],
+    [600, 40, 22, 20, 19, 17, 16, 600, 10000, 5500, 5000, 4750, 4250, 4000],
+    [600, 34, 20, 18, 17, 16, 16, 600, 8500, 5000, 4500, 4250, 4000, 4000],
+    [600, 38, 22, 20, 19, 18, 18, 600, 9500, 5500, 5000, 4750, 4500, 4500],
+    [600, 40, 22, 20, 19, 17, 16, 600, 10000, 5500, 5000, 4750, 4250, 4000],
+    [700, 48, 28, 28, 26, 23, 22, 700, 12000, 7000, 7000, 6500, 5750, 5500],
+    [600, 34, 15, 14, 13, 12, 12, 600, 8500, 3750, 3500, 3250, 3000, 3000],
+    [600, 34, 15, 14, 13, 12, 12, 600, 8500, 3750, 3500, 3250, 3000, 3000],
+    [600, 34, 15, 14, 13, 12, 12, 600, 8500, 3750, 3500, 3250, 3000, 3000],
+    [600, 34, 15, 14, 13, 12, 12, 600, 8500, 3750, 3500, 3250, 3000, 3000],
+    [600, 34, 15, 14, 13, 12, 12, 600, 8500, 3750, 3500, 3250, 3000, 3000],
+    [600, 34, 15, 14, 13, 12, 12, 600, 8500, 3750, 3500, 3250, 3000, 3000],
+    [600, 34, 15, 14, 13, 12, 12, 600, 8500, 3750, 3500, 3250, 3000, 3000],
+    [700, 48, 28, 28, 26, 23, 22, 700, 12000, 7000, 7000, 6500, 5750, 5500]
 ];
+
+let limits = [
+    [0, 1650, 3800, 11000, 20000, 28500, 54000, 0, 1500, 4750, 13750, 25000, 21375, 67500],
+    [0, 1450, 3400, 10000, 18000, 25500, 48000, 0, 1300, 4250, 12500, 22500, 19125, 60000],
+    [0, 1700, 4000, 11000, 20000, 28500, 51000, 0, 1500, 5000, 13750, 25000, 21375, 63750],
+    [0, 1700, 4000, 11000, 20000, 28500, 51000, 0, 1500, 5000, 13750, 25000, 21375, 63750],
+    [0, 1450, 3400, 10000, 18000, 25500, 48000, 0, 1300, 4250, 12500, 22500, 19125, 60000],
+    [0, 1650, 3800, 11000, 20000, 28500, 54000, 0, 1500, 4750, 13750, 25000, 21375, 67500],
+    [0, 1850, 4000, 11000, 20000, 28500, 51000, 0, 1700, 5000, 13750, 25000, 21375, 63750],
+    [0, 2150, 4800, 14000, 28000, 39000, 69000, 0, 2000, 6000, 17500, 35000, 29250, 86250],
+    [0, 1050, 3400, 7500, 14000, 19500, 36000, 0, 1500, 4250, 9375, 17500, 14625, 45000],
+    [0, 950, 3400, 7500, 14000, 19500, 36000, 0, 1300, 4250, 9375, 17500, 14625, 45000],
+    [0, 1050, 3400, 7500, 14000, 19500, 36000, 0, 1500, 4250, 9375, 17500, 14625, 45000],
+    [0, 1050, 3400, 7500, 14000, 19500, 36000, 0, 1500, 4250, 9375, 17500, 14625, 45000],
+    [0, 950, 3400, 7500, 14000, 19500, 36000, 0, 1300, 4250, 9375, 17500, 14625, 45000],
+    [0, 1050, 3400, 7500, 14000, 19500, 36000, 0, 1500, 4250, 9375, 17500, 14625, 45000],
+    [0, 1050, 3400, 7500, 14000, 19500, 36000, 0, 1700, 4250, 9375, 17500, 14625, 45000],
+    [0, 1350, 4800, 14000, 28000, 39000, 69000, 0, 2000, 6000, 17500, 35000, 29250, 86250]
+];
+
+//выбрать направление
+function getDirection(radio) {
+    if (radio.value === '1') {
+        direction = 'RST';
+        SetResultFieldToDefault();
+        SetCityValuesToDefault();
+        SetWeightAndVolumeToDefault();
+        senderBlock.hidden = true;
+        recieverBlock.hidden = false;
+    }
+    else if (radio.value === '2') {
+        direction = 'DNR';
+        SetResultFieldToDefault();
+        SetCityValuesToDefault();
+        SetWeightAndVolumeToDefault();
+        senderBlock.hidden = false;
+        recieverBlock.hidden = true;
+    }
+}
 
 //заполняем города
 document.addEventListener('DOMContentLoaded', function () {
@@ -48,23 +96,47 @@ document.addEventListener('DOMContentLoaded', function () {
         minLength: 0,
     });
 
-    $('#city').on('keyup', function () {
-        if (instances[0].count === 0) {
-            $('#city').val('');
-        }
-    })
+    // $('#sender-city').on('keyup', function () {
+    //     if (instances[0].count === 0) {
+    //         $('#sender-city').val('');
+    //     }
+    // })
+
+    // $('#reciever-city').on('keyup', function () {
+    //     if (instances[0].count === 0) {
+    //         $('#reciever-city').val('');
+    //     }
+    // })
 });
 
 //обнулить результат
 SetResultFieldToDefault = () => {
-    let resultField = document.getElementById("result-field");
-    resultField.innerHTML = ""
+    resultField.innerHTML = '';
+}
+
+//
+SetCityValuesToDefault = () => {
+    senderCity.value = '';
+    recieverCity.value = '';
+    senderCityValue = '';
+    recieverCityValue = '';
+}
+
+SetWeightAndVolumeToDefault = () => {
+    row = '';
+    weightResult = '';
+    volumeResult = '';
 }
 
 //обнулить результат при изменении input'ов и записать данные в переменные
-$("#city").on('change', function () {
-    cityValue = city.value;
+$("#sender-city").on('change', function () {
     SetResultFieldToDefault();
+    senderCityValue = senderCity.value;
+});
+
+$("#reciever-city").on('change', function () {
+    SetResultFieldToDefault();
+    recieverCityValue = recieverCity.value;
 });
 
 $("#weight").on('change', function () {
@@ -73,8 +145,10 @@ $("#weight").on('change', function () {
 });
 
 $("#volume").on('change', function () {
-    volumeValue = Number(volume.value);
+    volumeValue = Number(volume.value) / 250;
+    console.log(volumeValue);
     SetResultFieldToDefault();
+    volResultField.innerHTML = volumeValue;
 });
 
 //валидация weight
@@ -128,29 +202,57 @@ function CheckInputs() {
 }
 
 function GetRow() {
-    if (cityValue == 'Донецк') {
-        row = 0;
+    if (direction === 'RST') {
+        if (recieverCityValue == 'Донецк') {
+            row = 0;
+        }
+        else if (recieverCityValue == 'Макеевка') {
+            row = 1;
+        }
+        else if (recieverCityValue == 'Горловка' || recieverCityValue == 'Енакиево') {
+            row = 2;
+        }
+        else if (recieverCityValue == 'Шахтерск' || recieverCityValue == 'Снежное' || recieverCityValue == 'Красный Луч') {
+            row = 3;
+        }
+        else if (recieverCityValue == 'Луганск') {
+            row = 4;
+        }
+        else if (recieverCityValue == 'Стаханов' || recieverCityValue == 'Алчевск') {
+            row = 5;
+        }
+        else if (recieverCityValue == 'Мариуполь') {
+            row = 6;
+        }
+        else if (recieverCityValue == 'Бердянск' || recieverCityValue == 'Мелитополь') {
+            row = 7;
+        }
     }
-    else if (cityValue == 'Макеевка') {
-        row = 1;
-    }
-    else if (cityValue == 'Горловка' || cityValue == 'Енакиево') {
-        row = 2;
-    }
-    else if (cityValue == 'Шахтерск' || cityValue == 'Снежное' || cityValue == 'Красный Луч') {
-        row = 3;
-    }
-    else if (cityValue == 'Луганск') {
-        row = 4;
-    }
-    else if (cityValue == 'Стаханов' || cityValue == 'Алчевск') {
-        row = 5;
-    }
-    else if (cityValue == 'Мариуполь') {
-        row = 6;
-    }
-    else if (cityValue == 'Бердянск' || cityValue == 'Мелитополь') {
-        row = 7;
+    else if (direction === 'DNR') {
+        if (senderCityValue == 'Донецк') {
+            row = 8;
+        }
+        else if (senderCityValue == 'Макеевка') {
+            row = 9;
+        }
+        else if (senderCityValue == 'Горловка' || senderCityValue == 'Енакиево') {
+            row = 10;
+        }
+        else if (senderCityValue == 'Шахтерск' || senderCityValue == 'Снежное' || senderCityValue == 'Красный Луч') {
+            row = 11;
+        }
+        else if (senderCityValue == 'Луганск') {
+            row = 12;
+        }
+        else if (senderCityValue == 'Стаханов' || senderCityValue == 'Алчевск') {
+            row = 13;
+        }
+        else if (senderCityValue == 'Мариуполь') {
+            row = 14;
+        }
+        else if (senderCityValue == 'Бердянск' || senderCityValue == 'Мелитополь') {
+            row = 15;
+        }
     }
 }
 
@@ -182,7 +284,7 @@ function GetWeight() {
         col = 6;
     }
 
-    weightResult = weightValue * tarif[row][col];
+    weightResult = weightValue * tarif[row][col] < limits[row][col] ? limits[row][col] : weightValue * tarif[row][col];
     return weightResult;
 }
 
@@ -214,12 +316,17 @@ function GetVolume() {
         col = 13;
     }
 
-    volumeResult = volumeValue * tarif[row][col];
+    volumeResult = volumeValue * tarif[row][col] < limits[row][col] ? limits[row][col] : volumeValue * tarif[row][col]
     return volumeResult;
 }
 
 function CheckFieldsIsNotEmpty() {
-    if (cityValue != '' &&
+    if (direction === 'RST' && recieverCityValue != '' &&
+        weight.value.length && weightValue != '' && weightValue != '0' &&
+        volume.value.length && volumeValue != '' && volumeValue != '0') {
+        return true;
+    }
+    else if (direction === 'DNR' && senderCityValue != '' &&
         weight.value.length && weightValue != '' && weightValue != '0' &&
         volume.value.length && volumeValue != '' && volumeValue != '0') {
         return true;
@@ -228,12 +335,15 @@ function CheckFieldsIsNotEmpty() {
         return false;
     }
 }
+
 //общий рачет
 function GetResult() {
-    GetWeight();
-    GetVolume();
-    console.log(`сity = ${cityValue}, weightResult = ${weightResult}, volumeResult = ${volumeResult}, row = ${row}`);
     if (CheckFieldsIsNotEmpty()) {
+        GetWeight();
+        GetVolume();
+
+        console.log(`senderCity = ${senderCityValue}, recieverCity = ${recieverCityValue}, weightResult = ${weightResult}, volumeResult = ${volumeResult}, row = ${row}`);
+
         if (!isNaN(parseInt(weightResult)) && !isNaN(parseInt(volumeResult))) {
             finalResult = weightResult > volumeResult ? weightResult : volumeResult;
             resultField.innerHTML = Math.round(finalResult / 50) * 50 + " р.";
@@ -246,3 +356,4 @@ function GetResult() {
         alert("Все поля должны быть заполнены!");
     }
 }
+

@@ -15,35 +15,57 @@
             <div class="energy">
                 <div class="nrg">
                     <img class="energy-img" src="images/bsd.png" alt="logo">
-                    <label>v1.1 от 01.06.2023</label>
+                    <label>v1.2 от 01.07.2023</label>
                 </div>
                 <label></label>
             </div>
+
             <a href="https://www.donbass-post.ru/" class="margin"><img src="images/logo.png" /></a>
-            <div class="rows">
+
+            <div class="choose-direction">
+                <label>
+                    <input class="with-gap" name="direction" type="radio" value="1" onchange="getDirection(this)"
+                        checked />
+                    <span><strong>ИЗ Ростова</strong></span>
+                </label>
+
+                <label>
+                    <input class="with-gap" name="direction" type="radio" value="2" onchange="getDirection(this)" />
+                    <span><strong>ИЗ Л/ДНР</strong></span>
+                </label>
+            </div>
+
+            <div class="rows" id="sender-block" hidden>
                 <div class="input-field">
-                    <input type="text" id="city" class="autocomplete">
-                    <label for="city">Город:</label>
+                    <input type="text" id="sender-city" class="autocomplete">
+                    <label for="city">Откуда:</label>
+                </div>
+            </div>
+            <div class="rows" id="reciever-block">
+                <div class="input-field">
+                    <input type="text" id="reciever-city" class="autocomplete">
+                    <label for="city">Куда:</label>
                 </div>
             </div>
             <div class="rows">
                 <form>
                     <div class="input-field">
-                        <input placeholder="Введите вес, кг" id="weight" type="text" class="validate decimal"
+                        <input placeholder="введите вес, кг" id="weight" type="text" class="validate decimal"
                             onblur="CheckWeight(); CheckInputs();" onfocus="CheckWeight(); CheckInputs();"
                             onchange="CheckWeight(); CheckInputs();">
                         <label for="first_name">Вес, кг:</label>
                         <span class="helper-text" data-error="Введено неверное значение!"></span>
                     </div>
                     <div class="input-field">
-                        <input placeholder="Введите объём, м3" id="volume" type="text" class="validate"
+                        <input placeholder="введите объёмный вес, кг" id="volume" type="text" class="validate"
                             onblur="CheckVolume(); CheckInputs();" onfocus="CheckVolume(); CheckInputs();"
                             onchange="CheckVolume(); CheckInputs();">
-                        <label for="first_name">Объём, м3:</label>
+                        <label for="first_name">Объёмный вес, кг:</label>
                         <span class="helper-text" data-error="Введено неверное значение!"></span>
                     </div>
                 </form>
             </div>
+            <!-- <p class="results">Обьем = <span id="result-vol"></span>м3&nbsp;</p> -->
             <a class="waves-effect waves-light btn red button" id="result-btn" onclick="GetResult()">Рассчитать</a>
             <div class="rows">
                 <div class="amount">
