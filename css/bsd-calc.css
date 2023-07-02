@@ -40,12 +40,11 @@ form {
 }
 
 .rows {
-    margin-top: 5px;
     width: 270px;
 }
 
 .margin {
-    margin-top: 5px;
+    margin-top: 20px;
     margin-bottom: 10px;
 }
 
@@ -99,6 +98,12 @@ form {
     /* justify-content: center; */
     gap: 10px;
     margin: 0 auto 10px;
+}
+
+.results {
+    margin-top: -10px;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 500px) {
